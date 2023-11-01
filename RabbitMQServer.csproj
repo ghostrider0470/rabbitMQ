@@ -15,6 +15,7 @@
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
       <PackageReference Include="MongoDB.Driver" Version="2.22.0" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+      <PackageReference Include="RabbitMQ.Client" Version="6.6.0" />
     </ItemGroup>
 
 
@@ -22,6 +23,25 @@
       <None Update="appSettings.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Remove="RabbitMQClient\**" />
+      <None Remove="RabbitMQ_DTOs\**" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <Compile Remove="RabbitMQClient\**" />
+      <Compile Remove="RabbitMQ_DTOs\**" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <EmbeddedResource Remove="RabbitMQClient\**" />
+      <EmbeddedResource Remove="RabbitMQ_DTOs\**" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <Folder Include="Models\" />
     </ItemGroup>
 
 </Project>
