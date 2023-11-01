@@ -1,4 +1,6 @@
-﻿namespace RabbitMQ_DTOs;
+﻿using MongoDB.Bson;
+
+namespace RabbitMQ_DTOs;
 
 
 

@@ -1,13 +1,21 @@
-﻿namespace RabbitMQClient.Services;
+﻿using RabbitMQ_DTOs;
+
+namespace RabbitMQClient.Services;
 
 public interface ISightingsService
 {
-    public int GetActiveVisitors();
+    public string GetActiveVisitors(string day, params string[] cameras);
 }
 
 public class SightingsService : ISightingsService
 {
-    public int GetActiveVisitors()
+    private readonly IRabbitService _rabbitService;
+
+    public SightingsService(IRabbitService _rabbitService)
+    {
+        this._rabbitService = _rabbitService;
+    }
+    public string GetActiveVisitors(string day, params string[] cameras)
     {
         // Generate a unique correlation ID
         string correlationId = Guid.NewGuid().ToString();
@@ -15,21 +23,16 @@ public class SightingsService : ISightingsService
         // Set up a callback queue for the response
         var responseQueue = _rabbitService.SetupResponseQueue(correlationId);
 
+        var requestData = new QueryParameters(cameras, day);
+        
         // Send the request
         _rabbitService.SendMessage(requestData, correlationId, responseQueue);
 
         // Wait for the response with a timeout
-        var response = _rabbitService.WaitForResponse(correlationId, timeout);
+        var response = _rabbitService.WaitForResponse(correlationId, 6000);
 
         if (response != null)
-        {
-            // Return the response to the client
-            return Ok(response);
-        }
-        else
-        {
-            // Handle the case when a response is not received within the timeout
-            return StatusCode(500, "Request timeout");
-        }
+            return null;
+        return response;
     }
 }

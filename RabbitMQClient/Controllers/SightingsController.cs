@@ -8,15 +8,17 @@ namespace RabbitMQClient.Controllers;
 public class SightingsController : ControllerBase
 {
     private readonly ILogger<SightingsController> _logger;
+    private readonly ISightingsService _sightingsService;
 
-    public SightingsController(ILogger<SightingsController> logger, ISightingsService _sightingsService)
+    public SightingsController(ILogger<SightingsController> logger, ISightingsService sightingsService)
     {
         _logger = logger;
+        _sightingsService = sightingsService;
     }
     [HttpGet(Name = "active-visitors")]
-    public int Get()
+    public string Get(string[]? cameras = null, string day ="")
     {
-        return 3;
+        return _sightingsService.GetActiveVisitors( "2023/5/12", "64354cb3da408e8ff468a238");
     }
 
    

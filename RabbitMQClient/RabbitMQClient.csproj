@@ -22,4 +22,8 @@
 
 
 
+    <ItemGroup>
+      <ProjectReference Include="..\RabbitMQ_DTOs\RabbitMQ_DTOs.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -1,11 +1,18 @@
-﻿using System;
+﻿using System.Text;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using System.Text;
-using System.Threading;
 
-public class RabbitService
+namespace RabbitMQClient.Services;
+
+public interface IRabbitService
+{
+    public string SetupResponseQueue(string correlationId);
+    public void SendMessage(object payload, string correlationId, string responseQueue);
+    public string WaitForResponse(string correlationId, int timeout);
+}
+
+public class RabbitService : IRabbitService
 {
     private ConnectionFactory _factory = new ConnectionFactory { Uri = new Uri("amqp://guest:guest@localhost:5672") };
 
